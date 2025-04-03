@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>나만의 미니 홈페이지 - 확장 버전</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    ul, li { list-style: none; }
+    a { text-decoration: none; color: white; transition: 0.3s; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14px;
+      background: #f0f0f0;
+      padding-top: 70px;
+    }
+
+    /* 고정 메뉴 */
+    #header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #222;
+      padding: 15px;
+      z-index: 999;
+    }
+
+    #header ul {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    #header li a {
+      padding: 10px 15px;
+      background: #444;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    #header li a:hover {
+      background: #2a80ff;
+    }
+
+    /* 메인 구조 */
+    #container {
+      display: flex;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    /* 왼쪽 프로필 */
+    .profile {
+      width: 35%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    .profile h1 {
+      color: #2a80ff;
+      margin-bottom: 10px;
+    }
+
+    .profile h2 {
+      font-size: 0;
+      position: absolute;
+      left: -9999px;
+    }
+
+    .profile img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .profile p {
+      text-indent: 20px;
+      line-height: 1.6;
+      border-bottom: 1px dashed #ccc;
+      margin-bottom: 10px;
+    }
+
+    .profile p::first-letter {
+      font-size: 160%;
+      color: #ff6600;
+      font-weight: bold;
+    }
+
+    .profile ul li {
+      margin: 8px 0;
+    }
+
+    /* 오른쪽 콘텐츠 */
+    .notice {
+      width: 65%;
+    }
+
+    .notice .table-box {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    .notice table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .notice th {
+      background: #2a80ff;
+      color: #fff;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .notice td {
+      padding: 8px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .notice tr:hover {
+      background: #f0f8ff;
+    }
+
+    .content {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fffbe7;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      max-height: 150px;
+      overflow: auto;
+    }
+
+    .content span {
+      color: red;
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 15px;
+      background: #222;
+      color: #fff;
+      text-align: center;
+    }
+
+    address {
+      font-style: normal;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 고정 메뉴 -->
+  <div id="header">
+    <ul>
+      <li><a href="#">HOME</a></li>
+      <li><a href="#">ABOUT ME</a></li>
+      <li><a href="#">NOTICE</a></li>
+      <li><a href="#">CONTACT</a></li>
+    </ul>
+  </div>
+
+  <!-- 메인 영역 -->
+  <div id="container">
+
+    <!-- 프로필 -->
+    <div class="profile">
+      <h1>홍길동의 미니홈피</h1>
+      <h2>접근성용 제목</h2>
+      <img src="images/profile.png" alt="프로필 이미지">
+      <p>안녕하세요! 저는 웹 디자이너가 되고 싶은 고등학생입니다. 새로운 기술을 배우는 것을 좋아하고 도전하는 것을 즐깁니다.</p>
+      <ul>
+        <li>📧 이메일: hong@example.com</li>
+        <li>📍 위치: 서울시 성동구</li>
+        <li>💡 관심 분야: 디자인, HTML, CSS, JavaScript</li>
+      </ul>
+    </div>
+
+    <!-- 공지사항 + 본문 -->
+    <div class="notice">
+      <div class="table-box">
+        <h3 style="margin-bottom:10px; color:#2a80ff;">📢 공지사항</h3>
+        <table>
+          <tr>
+            <th>제목</th>
+            <th>날짜</th>
+          </tr>
+          <tr>
+            <td>1학기 프로젝트 발표 안내</td>
+            <td>2025-06-01</td>
+          </tr>
+          <tr>
+            <td>팀 회의 일정 변경</td>
+            <td>2025-05-28</td>
+          </tr>
+          <tr>
+            <td>중간 점검 결과 피드백</td>
+            <td>2025-05-20</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="content">
+        <p>
+          저는 이번 프로젝트에서 웹 표준과 웹 접근성을 고려한 디자인을 목표로 삼고 있어요.
+          특히 <span>모든 사람이 쉽게 사용할 수 있는 웹사이트</span>를 만드는 것이 중요하다고 생각합니다.
+          이를 위해 팀원들과 함께 HTML, CSS 구조를 고민하며 작업 중입니다.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 푸터 -->
+  <footer>
+    <address>&copy; 2025 홍길동. All rights reserved.</address>
+  </footer>
+
+</body>
+</html>
