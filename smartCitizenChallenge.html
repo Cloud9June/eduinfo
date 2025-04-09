@@ -136,6 +136,7 @@
     <p>이 학생은 올바른 디지털 예절을 알고 실천할 수 있는<br><strong>디지털 시민</strong>임을 인증합니다.</p>
     <input type="text" id="studentId" placeholder="학번 입력">
     <input type="text" id="studentName" placeholder="이름 입력">
+    <p id="infoText" style="display: none; font-size: 18px; font-weight: bold;"></p>
     <p style="font-weight: bold;">성일정보고등학교</p>
     <p>발급일: <span id="today"></span></p>
   </div>
@@ -193,12 +194,28 @@
     }
 
     function downloadCard() {
-      html2canvas(document.querySelector("#citizenCard")).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "디지털_예절_인증서.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
+        const name = document.getElementById("studentName").value.trim();
+        const id = document.getElementById("studentId").value.trim();
+
+        const infoText = document.getElementById("infoText");
+        infoText.innerText = `🧑‍💻 ${id}  ${name}`;
+        infoText.style.display = "block";
+
+        // input 숨기기
+        document.getElementById("studentId").style.display = "none";
+        document.getElementById("studentName").style.display = "none";
+
+        html2canvas(document.querySelector("#citizenCard")).then(canvas => {
+            const link = document.createElement("a");
+            link.download = "디지털_예절_인증서.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+
+            // 캡처 후 다시 복구
+            infoText.style.display = "none";
+            document.getElementById("studentId").style.display = "inline-block";
+            document.getElementById("studentName").style.display = "inline-block";
+        });
     }
   </script>
 </body>
