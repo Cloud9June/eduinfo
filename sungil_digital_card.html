@@ -129,6 +129,9 @@
 
       document.getElementById("resultCard").style.display = "block";
       document.getElementById("today").innerText = new Date().toISOString().split('T')[0];
+
+      // ✅ 결과 카드로 부드럽게 스크롤 이동
+      document.getElementById("resultCard").scrollIntoView({ behavior: 'smooth' });
     }
 
     function downloadCard() {
