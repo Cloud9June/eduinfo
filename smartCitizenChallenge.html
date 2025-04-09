@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>디지털 예절 인증 퀴즈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    h1 { font-size: 24px; }
+    .quiz-box {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .correct { background: #c8f7c5; }
+    .wrong { background: #f7c5c5; }
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .comment {
+      font-size: 14px;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    #citizenCard {
+      display: none;
+      position: relative;
+      background: #fff;
+      background-image: url('images/logo2.png'); /* ✅ 로컬 이미지 */
+      background-size: 45%;
+      background-repeat: no-repeat;
+      background-position: center;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+      width: 100%;
+      height: 100%;
+      max-width: 400px;
+      min-height: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #citizenCard * {
+      position: relative;
+      z-index: 1;
+    }
+
+    #citizenCard input {
+      padding: 8px;
+      font-size: 16px;
+      margin: 5px;
+      width: 80%;
+      max-width: 250px;
+      height: 36px;
+      box-sizing: border-box;
+      background-color: rgba(255, 255, 255, 0.9);
+      border: 1px solid #ccc;
+    }
+
+    #downloadBtn, #resetBtn {
+      margin-top: 15px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>이건 OK? NO! 🙅‍♀️</h1>
+  <h2>📸 소풍 상황에서 지켜야 할 디지털 예절을 맞춰보세요!</h2>
+
+  <div id="quizArea">
+    <div class="quiz-box">
+      <p><strong>1. 현장체험 도중 친구 사진을 허락 없이 단체 채팅방에 올렸다.</strong></p>
+      <button onclick="showResult(1, 'O', this)">⭕ OK</button>
+      <button onclick="showResult(1, 'X', this)">❌ NO</button>
+      <div class="result" id="result1"></div>
+      <div class="comment" id="comment1"></div>
+    </div>
+
+    <div class="quiz-box">
+      <p><strong>2. 소풍 인증샷에 학교 이름이 적힌 단체복이 보였다.</strong></p>
+      <button onclick="showResult(2, 'O', this)">⭕ OK</button>
+      <button onclick="showResult(2, 'X', this)">❌ NO</button>
+      <div class="result" id="result2"></div>
+      <div class="comment" id="comment2"></div>
+    </div>
+
+    <div class="quiz-box">
+      <p><strong>3. 소풍 중 친구가 춤추는 모습을 재미로 몰래 촬영했다.</strong></p>
+      <button onclick="showResult(3, 'O', this)">⭕ OK</button>
+      <button onclick="showResult(3, 'X', this)">❌ NO</button>
+      <div class="result" id="result3"></div>
+      <div class="comment" id="comment3"></div>
+    </div>
+
+    <div class="quiz-box">
+      <p><strong>4. 친구들과 합의해 짧은 브이로그 영상을 찍고, 서로 확인한 뒤 올렸다.</strong></p>
+      <button onclick="showResult(4, 'O', this)">⭕ OK</button>
+      <button onclick="showResult(4, 'X', this)">❌ NO</button>
+      <div class="result" id="result4"></div>
+      <div class="comment" id="comment4"></div>
+    </div>
+
+    <div class="quiz-box">
+      <p><strong>5. 현장체험 후 받은 단체사진을 캡처해서 다른 반 친구에게 전달했다.</strong></p>
+      <button onclick="showResult(5, 'O', this)">⭕ OK</button>
+      <button onclick="showResult(5, 'X', this)">❌ NO</button>
+      <div class="result" id="result5"></div>
+      <div class="comment" id="comment5"></div>
+    </div>
+
+    <button id="resetBtn" onclick="location.reload()">🔄 다시 풀기</button>
+  </div>
+
+  <!-- 디지털 시민 인증서 -->
+  <div id="citizenCard">
+    <h2>🎓 디지털 예절 인증서</h2>
+    <p>이 학생은 올바른 디지털 예절을 알고 실천할 수 있는<br><strong>디지털 시민</strong>임을 인증합니다.</p>
+    <input type="text" id="studentId" placeholder="학번 입력">
+    <input type="text" id="studentName" placeholder="이름 입력">
+    <p style="font-weight: bold;">성일정보고등학교</p>
+    <p>발급일: <span id="today"></span></p>
+  </div>
+
+  <button id="downloadBtn" onclick="downloadCard()">📸 시민증 캡처하기</button>
+
+  <script>
+    const answers = { 1: 'X', 2: 'X', 3: 'X', 4: 'O', 5: 'X' };
+    const comments = {
+      1: "📸 친구 얼굴은 반드시 허락받고 공유해야 해요.",
+      2: "🏫 학교 단체복은 신상을 유추할 수 있으니 주의해요.",
+      3: "🎥 몰래 촬영은 사생활 침해가 될 수 있어요. 반드시 동의받아야 해요.",
+      4: "📹 모두 함께 확인하고 올렸다면 디지털 매너 굿!",
+      5: "🚫 사진을 다른 사람과 공유할 땐 항상 주의가 필요해요."
+    };
+    const locked = {};
+    let score = 0;
+    let totalAnswered = 0;
+
+    function showResult(q, choice, btn) {
+      if (locked[q]) return;
+      const correct = answers[q];
+      const result = document.getElementById('result' + q);
+      const comment = document.getElementById('comment' + q);
+      const parent = btn.parentElement;
+      const buttons = parent.querySelectorAll('button');
+
+      buttons.forEach(b => {
+        b.disabled = true;
+        if (b === btn) {
+          b.classList.add(choice === correct ? 'correct' : 'wrong');
+        }
+      });
+
+      if (choice === correct) {
+        result.innerText = '✅ 정답이에요!';
+        score++;
+      } else {
+        result.innerText = '❌ 다시 생각해보세요.';
+      }
+
+      comment.innerText = comments[q];
+      locked[q] = true;
+      totalAnswered++;
+
+      if (totalAnswered === 5) {
+        document.getElementById('resetBtn').style.display = 'inline-block';
+        if (score >= 4) {
+          document.getElementById('citizenCard').style.display = 'block';
+          document.getElementById('downloadBtn').style.display = 'inline-block';
+          const today = new Date().toISOString().split('T')[0];
+          document.getElementById('today').innerText = today;
+        }
+      }
+    }
+
+    function downloadCard() {
+      html2canvas(document.querySelector("#citizenCard")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "디지털_예절_인증서.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
