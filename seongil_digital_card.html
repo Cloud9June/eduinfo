@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>오늘의 디지털 약속 카드</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f0f8ff;
+    }
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: auto;
+    }
+    .card button {
+        display: block;
+        margin: 20px auto 0;
+    }
+    label {
+      display: block;
+      margin: 10px 0;
+    }
+    input[type="text"] {
+      width: 90%;
+      padding: 8px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: #fff;
+      vertical-align: middle;
+    }
+    #resultCard {
+      display: none;
+      background: #fff;
+      background-image: url('images/logo2.png'); /* ✅ 로컬 이미지 */
+      background-size: 50%;
+      background-repeat: no-repeat;
+      background-position: center;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 30px;
+      text-align: center;
+      max-width: 400px;
+      margin: 30px auto 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    #resultCard ul {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+      text-align: left;
+    }
+    #resultCard ul li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>📱 오늘의 디지털 약속 만들기</h1>
+
+  <div class="card">
+    <p>오늘 소풍 중 지킬 디지털 예절을 선택해보세요! <br><strong>(4개 이상)</strong></p>
+
+    <label><input type="checkbox" class="rule" value="📸 친구 사진을 찍을 땐 반드시 허락을 받고 찍겠습니다."> 📸 친구 사진을 찍을 땐 반드시 허락을 받고 찍겠습니다.</label>
+    <label><input type="checkbox" class="rule" value="🤳 인증샷은 친구의 얼굴이나 정보가 드러나지 않도록 조심하겠습니다."> 🤳 인증샷은 친구의 얼굴이나 정보가 드러나지 않도록 조심하겠습니다.</label>
+    <label><input type="checkbox" class="rule" value="💬 단체 채팅방에서는 상대를 배려하는 말투를 쓰겠습니다."> 💬 단체 채팅방에서는 상대를 배려하는 말투를 쓰겠습니다.</label>
+    <label><input type="checkbox" class="rule" value="🔕 조용히 해야 할 장소에서는 스마트폰 소리를 끄겠습니다."> 🔕 조용히 해야 할 장소에서는 스마트폰 소리를 끄겠습니다.</label>
+    <label><input type="checkbox" class="rule" value="🚫 친구의 사진이나 영상을 허락 없이 공유하지 않겠습니다."> 🚫 친구의 사진이나 영상을 허락 없이 공유하지 않겠습니다.</label>
+    <label><input type="checkbox" class="rule" value="📱 스마트폰은 놀이와 소통의 도구로 긍정적으로 사용하겠습니다."> 📱 스마트폰은 놀이와 소통의 도구로 긍정적으로 사용하겠습니다.</label>
+    <label><input type="checkbox" class="rule" value="⏳ 소풍 시간에는 화면보다는 사람과의 시간을 더 소중히 하겠습니다."> ⏳ 소풍 시간에는 화면보다는 사람과의 시간을 더 소중히 하겠습니다.</label>
+    <label><input type="checkbox" class="rule" value="🧠 올리기 전에 한 번 더 생각하고 행동하겠습니다."> 🧠 올리기 전에 한 번 더 생각하고 행동하겠습니다.</label>
+
+    <input type="text" id="studentId" placeholder="학번 입력">
+    <input type="text" id="studentName" placeholder="이름 입력">
+    
+    <button onclick="generateCard()">📌 약속 카드 만들기</button>
+  </div>
+
+  <div id="resultCard">
+    <h2>📜 오늘의 디지털 약속 카드</h2>
+    <p><strong id="outputName"></strong> 학생의 다짐</p>
+    <ul id="selectedRules"></ul>
+    <p><strong>성일정보고등학교</strong></p>
+    <p>발급일: <span id="today"></span></p>
+    <button onclick="downloadCard()">📸 캡처해서 저장하기</button>
+  </div>
+
+  <script>
+    function generateCard() {
+      const rules = Array.from(document.querySelectorAll('.rule:checked')).map(cb => cb.value);
+      const name = document.getElementById("studentName").value.trim();
+      const id = document.getElementById("studentId").value.trim();
+
+      if (rules.length < 4 || !name || !id) {
+          alert("4개 이상 선택하고 이름과 학번을 입력하세요.");
+          return;
+      }
+
+      document.getElementById("outputName").innerText = `${id} ${name}`;
+      const ul = document.getElementById("selectedRules");
+      ul.innerHTML = "";
+      rules.forEach(rule => {
+          const li = document.createElement("li");
+          li.innerText = rule;
+          ul.appendChild(li);
+      });
+
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("today").innerText = new Date().toISOString().split('T')[0];
+    }
+
+    function downloadCard() {
+      const button = document.querySelector("#resultCard button");
+      button.style.display = "none"; // 캡처 전 버튼 숨기기
+
+      html2canvas(document.querySelector("#resultCard")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "오늘의_디지털_약속카드.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+
+        button.style.display = "inline-block"; // 캡처 후 다시 보이게
+      });
+    }
+  </script>
+</body>
+</html>
