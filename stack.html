@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>스택 시각화</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      background: #fdfdfd;
+    }
+    h2 { margin-bottom: 20px; }
+    .controls {
+      margin-bottom: 30px;
+    }
+    input {
+      width: 100px;
+      padding: 8px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      padding: 8px 14px;
+      margin-right: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      background-color: #4a90e2;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #357ac9;
+    }
+    .main-area {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stack-area, .popped-area, .ops-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .label {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    #stack-container, #popped-container {
+      width: 120px;
+      height: 600px;
+      border: 3px solid #333;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-start;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 10px;
+      padding: 5px;
+      overflow-y: auto;
+    }
+    #ops-container {
+      width: 120px;
+      height: 600px; /* 세로 두 배로 확장 */
+      border: 3px solid #333;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-start;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 10px;
+      padding: 5px;
+      overflow-y: auto;
+    }
+    .stack-item {
+      width: 80px;
+      height: 30px;
+      margin: 4px 0;
+      background: #4a90e2;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .popped-item {
+      background: #e74c3c;
+    }
+    .op-item {
+      width: 30px;
+      height: 30px;
+      margin: 4px 0;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🧱 스택 시각화 도구</h2>
+
+<div class="controls">
+  <input type="number" id="inputValue" placeholder="숫자 입력" />
+  <button onclick="pushStack()">Push</button>
+  <button onclick="popStack()">Pop</button>
+  <button onclick="resetStack()" style="background-color: #888;">초기화</button>
+</div>
+
+<div class="main-area">
+  <div class="stack-area">
+    <div class="label">스택(Stack)</div>
+    <div id="stack-container"></div>
+  </div>
+  <div class="popped-area">
+    <div class="label">Pop된 값들</div>
+    <div id="popped-container"></div>
+  </div>
+  <div class="ops-area">
+    <div class="label">연산기록</div>
+    <div id="ops-container"></div>
+  </div>
+</div>
+
+<script>
+  const stackContainer = document.getElementById("stack-container");
+  const poppedContainer = document.getElementById("popped-container");
+  const opsContainer = document.getElementById("ops-container");
+  let stack = [];
+
+  function pushStack() {
+    const value = document.getElementById("inputValue").value.trim();
+    if (value === "") return;
+
+    const item = document.createElement("div");
+    item.className = "stack-item";
+    item.innerText = value;
+
+    stack.push(item);
+    stackContainer.appendChild(item);
+
+    addOperation("+");
+
+    document.getElementById("inputValue").value = "";
+    document.getElementById("inputValue").focus();
+  }
+
+  function popStack() {
+    if (stack.length === 0) return;
+
+    const topItem = stack.pop();
+    stackContainer.removeChild(topItem);
+
+    const poppedItem = topItem.cloneNode(true);
+    poppedItem.classList.add("popped-item");
+    poppedContainer.appendChild(poppedItem);
+
+    addOperation("-");
+  }
+
+  function resetStack() {
+    stack = [];
+    stackContainer.innerHTML = "";
+    poppedContainer.innerHTML = "";
+    opsContainer.innerHTML = "";
+  }
+
+  function addOperation(symbol) {
+    const op = document.createElement("div");
+    op.className = "op-item";
+    op.innerText = symbol;
+    opsContainer.appendChild(op);
+  }
+</script>
+
+</body>
+</html>
