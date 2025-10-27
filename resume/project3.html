@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://scccurri.github.io/portfolio/index.html" />
+  <meta property="og:title" content="김형준 포트폴리오" />
+  <meta property="og:image" content="image/OGimage.png" />
+  <meta property="og:description" content="성일정보고 학생용 웹앱 S:NOW 프로젝트 소개입니다." />
+  <meta property="og:site_name" content="SCC Portfolio" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <title>S:NOW 학생용 웹앱 프로젝트</title>
+
+  <style>
+    :root {
+      --main-bg-color: #fff;
+      --main-font-color: #1d1f20;
+      font-family: "NanumSquareOTF-Regular", Helvetica;
+      font-weight: 400;
+      --card-margin: 6.1rem 6.8rem 0;
+      --card-height: 30.1rem;
+      --card-border-radius: 0.9rem;
+      --text-color-secondary: #4a4a4a;
+    }
+
+    body {
+      margin: 0;
+      background-image: url("image/bg.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      overflow-x: hidden;
+    }
+
+    .project-card {
+      margin: var(--card-margin);
+      height: var(--card-height);
+      border-radius: var(--card-border-radius);
+      background: var(--main-bg-color);
+      box-shadow: 0 0.3rem 1.3rem 0 rgba(0, 0, 0, 0.2);
+      display: grid;
+      grid-template-areas:
+        "top top top"
+        "name name image"
+        "icons tool image"
+        "bottom bottom bottom";
+      grid-template-rows: 3.1rem 15.1rem 8.3rem 3.1rem;
+      grid-template-columns: 15.6rem 15.6rem 1fr;
+      overflow: hidden;
+    }
+
+    .project-card>* {
+      background-color: var(--main-bg-color);
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #000;
+    }
+
+    .project-card::before,
+    .project-card::after {
+      content: "";
+      background-color: var(--main-bg-color);
+    }
+
+    .project-card::before {
+      grid-area: top;
+      border-bottom: 1px solid #000;
+    }
+
+    .project-card::after {
+      grid-area: bottom;
+      border-top: 1px solid #000;
+      border-bottom: none;
+    }
+
+    .project-card-name {
+      grid-area: name;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+      border-left: none;
+    }
+
+    .project-card-image {
+      grid-area: image;
+      padding: 0.6rem;
+      border-right: none;
+      border-bottom: none;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .project-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .project-card-icons {
+      grid-area: icons;
+      padding: 0.6rem;
+      border-left: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 1.5rem;
+      border-bottom: none;
+      gap: 0.6rem;
+    }
+
+    .project-row,
+    .project-github-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .project-github-link a {
+      color: var(--main-font-color);
+      font-size: 0.6rem;
+      text-decoration: none;
+    }
+
+    .project-github-link a:hover {
+      text-decoration: underline;
+    }
+
+    .project-icon {
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+
+    .project-content-detail {
+      font-size: 0.6rem;
+    }
+
+    .project-card-tool {
+      grid-area: tool;
+      padding: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.8rem;
+      border-bottom: none;
+    }
+
+    .project-title {
+      color: var(--main-font-color);
+      font-size: 2.3rem;
+      line-height: normal;
+    }
+
+    .project-content {
+      color: var(--text-color-secondary);
+      font-size: 0.7rem;
+      line-height: 1.4rem;
+    }
+
+    .project-content-detail {
+      color: var(--text-color-secondary);
+      font-size: 0.6rem;
+      line-height: normal;
+    }
+
+    .project-tool-detail {
+      color: var(--main-font-color);
+      font-size: 0.6rem;
+      line-height: normal;
+    }
+
+    .project-tool-point {
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+
+    /* 슬라이더 스타일 유지 */
+    .project-pictures {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      margin: 3.1rem;
+      overflow: hidden;
+      height: 30rem;
+    }
+
+    .project-picture-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .project-picture {
+      position: absolute;
+      transition: all 0.5s ease-in-out;
+      width: 15rem;
+      height: 28rem;
+    }
+
+    .project-picture.center {
+      z-index: 5;
+      transform: scale(1) translateX(0);
+      opacity: 1;
+    }
+
+    .project-picture.side-1 {
+      z-index: 4;
+      transform: scale(0.8) translateX(-18rem);
+      opacity: 0.5;
+    }
+
+    .project-picture.side-1.right {
+      transform: scale(0.8) translateX(18rem);
+    }
+
+    .project-picture.side-2 {
+      z-index: 3;
+      transform: scale(0.6) translateX(-36rem);
+      opacity: 0.2;
+    }
+
+    .project-picture.side-2.right {
+      transform: scale(0.6) translateX(36rem);
+    }
+
+    .project-picture.hidden {
+      z-index: 1;
+      transform: scale(0.4) translateX(0);
+      opacity: 0;
+    }
+
+    .project-div-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 0.9rem;
+      object-fit: cover;
+      object-position: top;
+      box-shadow: 0 0.3rem 1.3rem 0 rgba(0, 0, 0, 0.3);
+      border: 0.4rem solid #333;
+    }
+
+    .project-prev,
+    .project-next {
+      position: absolute;
+      cursor: pointer;
+      z-index: 6;
+    }
+
+    .project-prev {
+      left: 0.6rem;
+    }
+
+    .project-next {
+      right: 0.6rem;
+    }
+    /* ------------------------------------------------ */
+    /* 💡 Detail Card 스타일 원본 그대로 복구 💡 */
+    .detail-card {
+      border-top: 1px solid #000;
+      display: grid;
+      grid-template-areas:
+        "a list ts b"
+        "c d d e";
+      grid-template-columns: 6.8rem 1fr 1fr 6.8rem;
+      grid-template-rows: min-content 2.1rem;
+      overflow: hidden;
+    }
+
+    .detail-card>* {
+      /* 이 부분이 기존의 보더를 유지하는 핵심 */
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #000;
+    }
+
+    .detail-card-a {
+      grid-area: a;
+    }
+
+    .detail-card-b {
+      grid-area: b;
+      border-right: none;
+    }
+
+    .detail-card-c {
+      grid-area: c;
+    }
+
+    .detail-card-d {
+      grid-area: d;
+    }
+
+    .detail-card-e {
+      grid-area: e;
+      border-right: none;
+    }
+
+    .detail-card-list {
+      grid-area: list;
+      padding: 2.1rem;
+      /* 이 부분의 border-right는 .detail-card > * 에서 이미 적용됨 */
+      overflow: hidden;
+    }
+
+    .detail-card-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-card-title {
+      color: var(--main-font-color);
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .detail-card-ts {
+      grid-area: ts;
+      padding: 3.1rem;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .detail-card-title {
+      display: inline-flex;
+      padding: 0.3rem 1.3rem;
+      justify-content: center;
+      align-items: center;
+      gap: 0.8rem;
+      border-radius: 1.8rem;
+      font-size: 0.8rem;
+      background: var(--main-font-color);
+      color: white;
+      width: fit-content;
+      margin: 0.9rem 0;
+    }
+
+    .project-card-detail {
+      color: var(--main-font-color);
+      font-size: 0.8rem;
+      line-height: normal;
+    }
+
+    .project-card-ex {
+      color: var(--text-color-secondary);
+      font-family: var(--font-family-main);
+      font-size: 0.8rem;
+      line-height: normal;
+      margin: 0.3rem 0 0.8rem 1.1rem;
+    }
+
+    @media (max-width: 64rem) {
+      .project-card {
+        margin: 3rem;
+        height: auto;
+        grid-template-areas:
+          "top top"
+          "name image"
+          "icons tool"
+          "bottom bottom";
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+    }
+
+    @media (max-width: 48rem) {
+      .project-card {
+        margin: 1.3rem;
+        grid-template-areas:
+          "image"
+          "name"
+          "icons"
+          "tool";
+        grid-template-rows: auto auto auto auto;
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+
+      .project-card-image {
+        grid-area: image;
+        width: 100%;
+        height: auto;
+      }
+
+      .project-card-name {
+        grid-area: name;
+        padding: 1rem;
+      }
+
+      .project-content {
+        padding: 0 1rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .project-card-icons {
+        grid-area: icons;
+      }
+
+      .project-card-tool {
+        grid-area: tool;
+      }
+
+      .project-card-name,
+      .project-card-image,
+      .project-card-icons,
+      .project-card-tool {
+        padding: 0.6rem;
+        border-right: none;
+        border-bottom: 1px solid #000;
+      }
+
+      .project-card-tool {
+        border-bottom: none;
+      }
+
+      .project-card-icons,
+      .project-card-tool {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+
+      .project-row {
+        width: 100%;
+      }
+
+      .project-pictures {
+        margin: 1.5rem;
+        height: 25rem;
+      }
+
+      .project-picture-wrapper {
+        width: 100%;
+      }
+
+      .project-div-image {
+        width: 70%;
+        height: 100%;
+        display: block;
+        margin: 0 auto;
+        border-radius: 0.9rem;
+      }
+
+      .project-picture.side-1,
+      .project-picture.side-2,
+      .project-picture.hidden {
+        display: none;
+      }
+
+      .project-picture.center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: auto;
+      }
+
+      /* 💡 Detail Card 모바일 스타일 원본 그대로 복구 💡 */
+      .detail-card {
+        grid-template-areas:
+          "a list b"
+          "c ts d"
+          "e e e";
+        grid-template-columns: 1rem 1fr 1rem;
+        grid-template-rows: auto auto 2.1rem;
+      }
+
+      .detail-card-d {
+        grid-area: d;
+        border-right: none;
+      }
+
+      .detail-card-list,
+      .detail-card-ts {
+        padding: 1.5rem;
+      }
+    }
+
+    a:focus,
+    button:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 2px solid var(--highlight-color);
+      outline-offset: 2px;
+    }
+
+    .project-content,
+    .project-content-detail,
+    .project-card-ex {
+      color: var(--text-color-secondary);
+      font-size: 0.8rem;
+      line-height: normal;
+    }
+
+    .project-content {
+      font-size: 0.7rem;
+      line-height: 1.4rem;
+    }
+
+    .project-content-detail {
+      font-size: 0.6rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background">
+    <div class="project-card">
+      <div class="project-card-name">
+        <div class="project-title">S:NOW 학생용 웹앱</div>
+        <div class="project-content">
+          S:NOW는 성일정보고 학생들의 학교생활 편의를 위해 개발된 통합형 웹앱입니다.
+          급식 확인, 피드(공지) 확인, 대외활동 안내, 디지털 시민교육 콘텐츠 등
+          다양한 기능을 한 화면에서 사용할 수 있도록 설계되었습니다.
+          Firebase를 기반으로 교사·학생 권한에 따라 화면이 다르게 구성되며,
+          PWA(Progressive Web App) 형태로 개발되어 스마트폰에 앱처럼 설치할 수 있습니다.
+          또한 키오스크 모드로도 실행 가능하도록 최적화되어,
+          학교 내 정보 안내용 대형 화면에서도 동일하게 작동합니다.
+        </div>
+      </div>
+      <div class="project-card-image">
+        <img src="image/snow_main.png" class="project-image" />
+      </div>
+      <div class="project-card-icons">
+        <div class="project-row">
+          <img src="image/period.svg" class="project-icon" />
+          <div class="project-content-detail">24.02~현재 / 지속 개발</div>
+        </div>
+        <div class="project-row">
+          <img src="image/people.svg" class="project-icon" />
+          <div class="project-content-detail">1인 개발</div>
+        </div>
+        <div class="project-row">
+          <img src="image/role.svg" class="project-icon" />
+          <div class="project-content-detail">기획 · 디자인 · 프론트엔드 · Firebase 연동</div>
+        </div>
+        <div class="project-github-link">
+          <img src="image/github.svg" class="project-icon" />
+          <a href="https://github.com/scccurri/sungilnow" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+        </div>
+      </div>
+      <div class="project-card-tool">
+        <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+          <div class="project-tool-detail">HTML5, CSS3, JavaScript(ES6+)</div>
+        </div>
+        <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+          <div class="project-tool-detail">Firebase (Auth, Firestore, Hosting)</div>
+        </div>
+        <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+          <div class="project-tool-detail">Google Apps Script, gsx2json API</div>
+        </div>
+        <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+          <div class="project-tool-detail">PWA (Service Worker, Manifest)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-pictures">
+      <img class="project-prev" src="image/prev.svg" onclick="moveImages('prev')" />
+      <div class="project-picture-wrapper">
+        <div class="project-picture" id="image1"><img src="image/snow_m_1.png" class="project-div-image" /></div>
+        <div class="project-picture" id="image2"><img src="image/snow_m_2.png" class="project-div-image" /></div>
+        <div class="project-picture" id="image3"><img src="image/snow_m_3.png" class="project-div-image" /></div>
+        <div class="project-picture" id="image4"><img src="image/snow_m_4.png" class="project-div-image" /></div>
+        <div class="project-picture" id="image5"><img src="image/snow_m_5.png" class="project-div-image" /></div>
+        <div class="project-picture" id="image6"><img src="image/snow_m_6.png" class="project-div-image" /></div>
+      </div>
+      <img class="project-next" src="image/next.svg" onclick="moveImages('next')" />
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-card-a"></div>
+      <div class="detail-card-b"></div>
+      <div class="detail-card-c"></div>
+      <div class="detail-card-d"></div>
+      <div class="detail-card-e"></div>
+      <div class="detail-card-list">
+        <div class="detail-card-wrapper">
+          <div class="detail-card-title">주요 기능</div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">피드 시스템 — 교사·학생 권한별 공지 작성 및 열람</div>
+          </div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">급식 신청 — Firestore 데이터 기반 신청/승인 구조</div>
+          </div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">대외활동 탭 — 공모전, 교외활동, 봉사활동 안내</div>
+          </div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">도움말 탭 — 앱 설치 및 계정 연동 안내, QR코드 제공</div>
+          </div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">키오스크 모드 — 대형 화면 자동 로그인 및 학교명 표시</div>
+          </div>
+
+          <div class="detail-card-title">Firebase 연동 구조</div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">Auth — 구글 계정 로그인 및 권한 인증</div>
+          </div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">Firestore — 피드, 급식신청, 사용자정보 컬렉션 관리</div>
+          </div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">Storage — 이미지 업로드 및 첨부파일 저장(확장 예정)</div>
+          </div>
+
+          <div class="detail-card-title">PWA 구축</div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">Service Worker, manifest.json 기반 앱 설치 지원</div>
+          </div>
+          <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+            <div class="project-card-detail">오프라인 상태에서도 피드 캐싱 및 확인 가능</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card-ts">
+        <div class="detail-card-title">문제 해결 사례</div>
+        <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+          <div class="project-card-detail">Firebase 보안 규칙 개선</div>
+        </div>
+        <div class="project-card-ex">
+          초기에는 localStorage를 통한 권한 관리로 보안 위험이 있었으나, Firestore 기반 users 컬렉션과 Security Rules를 적용하여 관리자·담임·학생 권한을 세분화했습니다.
+        </div>
+
+        <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+          <div class="project-card-detail">앱 설치 UX 개선</div>
+        </div>
+        <div class="project-card-ex">
+          키오스크용 Chrome 환경과 모바일 브라우저의 차이로 설치 안내 혼란이 발생하여, ‘도움말’ 탭에 QR코드 및 앱 설치 튜토리얼을 추가했습니다.
+        </div>
+
+        <div class="detail-card-title">성과 및 발전 방향</div>
+        <div class="project-row"><img src="image/point.svg" class="project-tool-point" />
+          <div class="project-card-detail">현재 개발 사항</div>
+        </div>
+        <div class="project-card-ex">
+          현재 학교 내에서 실제 운영 중이며, 교사·학부모 계정 통합과 푸시 알림 기능 추가를 목표로 버전 4.0을 개발 중입니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentImageIndex = 0;
+    const totalImages = 6;
+
+    function updateImages(isAnimating) {
+        const images = document.querySelectorAll(".project-picture");
+
+        images.forEach((image, index) => {
+            let relativePosition = index - currentImageIndex;
+
+            if (relativePosition > totalImages / 2) {
+                relativePosition -= totalImages;
+            } else if (relativePosition < -totalImages / 2) {
+                relativePosition += totalImages;
+            }
+
+            image.className = "project-picture";
+
+            if (relativePosition === 0) {
+                image.classList.add("center");
+            } else if (relativePosition === 1) {
+                image.classList.add("side-1", "right");
+            } else if (relativePosition === -1) {
+                image.classList.add("side-1");
+            } else if (relativePosition === 2) {
+                image.classList.add("side-2", "right");
+            } else if (relativePosition === -2) {
+                image.classList.add("side-2");
+            } else {
+                image.classList.add("hidden");
+            }
+        });
+    }
+
+    function moveImages(direction) {
+        if (direction === "next") {
+            currentImageIndex = (currentImageIndex + 1) % totalImages;
+        } else {
+            currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages;
+        }
+
+        updateImages(true);
+        setTimeout(() => updateImages(false), 500);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        updateImages(false);
+    });
+  </script>
+</body>
+
+</html>
