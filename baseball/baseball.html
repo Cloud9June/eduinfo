@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>숫자야구 게임</title>
+    <link rel="stylesheet" href="css/style2.css">
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <button onclick="location.href='https://cloud9june.github.io/sungil-edu/kiosk.html'" 
+        style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            font-size: 22px; padding: 14px 30px;
+            background: white; color: #111;
+            border: 2px solid #444; border-radius: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            font-family: 'Pretendard', sans-serif;"
+        onmousedown="this.style.transform='translateX(-50%) scale(0.96)'"
+        onmouseup="this.style.transform='translateX(-50%) scale(1)'"
+        ontouchstart="this.style.transform='translateX(-50%) scale(0.96)'"
+        ontouchend="this.style.transform='translateX(-50%) scale(1)'">
+        🏠 홈으로
+    </button>
+    <!-- 게임 시작 화면 영역 -->
+    <div id="startScreen" class="active">
+        <h1>⚾ 숫자야구 게임 ⚾</h1>
+        <img id="startImage" src="images/baseball-31342_640.png" alt="야구 이미지">
+        <br>
+        <button id="startBtn">START</button>
+
+        <!-- START 버튼 아래에 추가할 규칙 박스 -->
+        <div id="rulesBox">
+            <h3>게임 규칙</h3>
+            <p>1. 서로 다른 숫자 3개로 이루어진 숫자를 맞히는 게임입니다.</p>
+            <p>2. 숫자와 자리가 모두 맞으면 <strong>스트라이크(S)</strong></p>
+            <p>3. 숫자는 맞지만 자리가 다르면 <strong>볼(B)</strong></p>
+            <p>4. 3스트라이크가 되면 게임에서 승리합니다!</p>
+        </div>
+
+    </div>
+
+    <!-- 게임 플레이 화면 영역 -->
+    <div id="gameScreen">
+        <h1>숫자야구 게임</h1>
+        <!-- 사용자가 선택한 숫자 표시 -->
+        <div id="numberDisplay">___</div>
+
+        <!-- 숫자 선택 버튼 (1~9) -->
+        <div class="button-grid">
+            <!-- 각 버튼 클릭 시 addDigit 함수 호출 -->
+            <button class="num-btn" onclick="addDigit(1)">1</button>
+            <button class="num-btn" onclick="addDigit(2)">2</button>
+            <button class="num-btn" onclick="addDigit(3)">3</button>
+            <button class="num-btn" onclick="addDigit(4)">4</button>
+            <button class="num-btn" onclick="addDigit(5)">5</button>
+            <button class="num-btn" onclick="addDigit(6)">6</button>
+            <button class="num-btn" onclick="addDigit(7)">7</button>
+            <button class="num-btn" onclick="addDigit(8)">8</button>
+            <button class="num-btn" onclick="addDigit(9)">9</button>
+        </div>
+
+        <!-- 제어 버튼 (지우기 / 확인) -->
+        <div>
+            <!-- 마지막 입력 숫자 하나 제거 -->
+            <button class="ctrl-btn" onclick="removeDigit()">⬅️ 지우기</button>
+            <!-- 입력한 숫자 확인 후 결과 판단 -->
+            <button class="ctrl-btn" onclick="checkGuess()">✅ 확 인</button>
+        </div>
+
+        <button id="resetBtn" onclick="resetGame()">🔄 리셋</button>
+
+        <!-- 결과 출력 영역 (스트라이크/볼 or 정답) -->
+        <div id="result"></div>
+        <!-- 시도 내역 리스트 -->
+        <ul id="history"></ul>
+    </div>
+</body>
+</html>

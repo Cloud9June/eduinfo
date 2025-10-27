@@ -1,0 +1,141 @@
+/* 전체 페이지 기본 설정 */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background: #f2f2f2; /* 연한 회색 배경 */
+}
+
+/* 시작 화면과 게임 화면의 기본 숨김 처리 및 패딩 적용 */
+#startScreen,
+#gameScreen {
+    display: none;  /* 기본적으로는 안 보이게 처리 */
+    padding: 40px;
+}
+
+/* 현재 활성화된 화면은 보이도록 설정 */
+#startScreen.active,
+#gameScreen.active {
+    display: block;
+}
+
+/* 화면 제목 스타일 */
+h1 {
+    font-size: 2.5em;
+    margin-top: 40px;
+    color: #2c3e50;  /* 어두운 남색 텍스트 */
+}
+
+/* 시작 화면 이미지 스타일 */
+#startImage {
+    width: 400px;
+    margin: 20px auto;
+}
+
+/* START 버튼 스타일 */
+#startBtn {
+    font-size: 1.5em;
+    padding: 15px 30px;
+    border: none;
+    background-color: #27ae60;  /* 녹색 계열 */
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    animation: pulse 1.5s infinite;  /* 커졌다 작아지는 애니메이션 */
+}
+
+/* START 버튼의 애니메이션 정의 */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 규칙 박스 스타일 */
+#rulesBox {
+    max-width: 400px;
+    margin: 30px auto 0;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 2px solid #27ae60;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 1em;
+    color: #2c3e50;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);  /* 약한 그림자 */
+}
+
+/* 규칙 박스 제목 스타일 */
+#rulesBox h3 {
+    margin-top: 0;
+    color: #27ae60;
+}
+
+/* 규칙 박스 내용 스타일 */
+#rulesBox p {
+    margin: 5px 0;
+}
+
+/* 사용자 입력 숫자 표시 영역 */
+#numberDisplay {
+    font-size: 2em;
+    margin: 20px 0;
+    letter-spacing: 10px;  /* 숫자 간 간격 */
+}
+
+/* 숫자 버튼 배치 (3열 그리드) */
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);  /* 버튼 3개씩 배치 */
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* 숫자 버튼과 제어 버튼 스타일 */
+.num-btn,
+.ctrl-btn {
+    padding: 20px;
+    font-size: 1.2em;
+    background-color: #3498db;  /* 파란색 계열 */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* 제어 버튼(확인, 지우기)만 별도 색상 */
+.ctrl-btn {
+    background-color: #e67e22;  /* 주황색 계열 */
+}
+
+/* 결과 텍스트 출력 스타일 */
+#result {
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+/* 기록 리스트 스타일 (불릿 제거) */
+#history {
+    list-style: none;
+    padding: 0;
+}
+
+/* 리셋 버튼 스타일 */
+#resetBtn {
+    margin-top: 10px;
+    font-size: 1em;
+    padding: 10px 20px;
+    border: none;
+    background-color: #e74c3c;  /* 빨간색 계열 */
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
