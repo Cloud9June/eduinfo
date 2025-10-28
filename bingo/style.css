@@ -1,0 +1,154 @@
+  body {
+      font-family: "Pretendard", sans-serif;
+      background-color: #f6f7fb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 10px 160px;
+  }
+
+  .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 150px);
+      grid-gap: 20px;
+      justify-content: center;
+  }
+
+  .card {
+      width: 150px;
+      height: 150px;
+      perspective: 1000px;
+      cursor: pointer;
+  }
+
+  .inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+  }
+
+  .card.flipped .inner {
+      transform: rotateY(180deg);
+  }
+
+  .front,
+  .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      backface-visibility: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      font-weight: 600;
+      box-sizing: border-box;
+  }
+
+  .front {
+      background-color: #cfd8dc;
+      color: #37474f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+  }
+
+  .back {
+      background-color: #ffffff;
+      color: #333;
+      transform: rotateY(180deg);
+      font-size: 0.9rem;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 3px solid transparent;
+      transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  /* 팀 색상 */
+  .team-A {
+      background-color: #bbdefb;
+      border-color: #2196f3;
+  }
+
+  .team-B {
+      background-color: #ffcdd2;
+      border-color: #e53935;
+  }
+
+  .team-C {
+      background-color: #c8e6c9;
+      border-color: #43a047;
+  }
+
+  .topic {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.4;
+  }
+
+  .name-field {
+      border-top: 1px solid #ddd;
+      padding-top: 4px;
+  }
+
+  .name-field input {
+      width: 100%;
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.8rem;
+      text-align: center;
+  }
+
+  .explain-box,
+  .result-box {
+      margin-top: 30px;
+      width: calc(150px * 5 + 80px);
+      background: #fff;
+      border: 2px solid #90a4ae;
+      border-radius: 12px;
+      padding: 14px;
+      line-height: 1.5;
+      color: #333;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .explain-box {
+      color: #fff;
+  }
+
+  .result-box {
+      text-align: center;
+      font-weight: 600;
+      margin-top: 10px;
+  }
+
+  .controller {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      background: #f6f7fb;
+      padding: 10px 0;
+  }
+
+  button {
+      margin: 0 6px;
+      padding: 6px 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #607d8b;
+      color: #fff;
+      cursor: pointer;
+  }
+
+  button.reset {
+      background-color: #b71c1c;
+  }

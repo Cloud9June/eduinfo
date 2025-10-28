@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>논술 빙고 게임</title>
+<!-- 🔽 기본 CSS 및 스크립트 -->
+<link rel="stylesheet" href="style.css">
+<script src="data2.js"></script> <!-- 🔹여기 숫자만 바꿔서 data2.js, data3.js 로 교체 가능 -->
+</head>
+<body>
+
+<h2>🎴 논술 주제 빙고 게임</h2>
+<div class="grid" id="cardGrid"></div>
+
+<div class="explain-box" id="explainBox">
+  💬 카드가 뒤집히면 이곳에 교사용 부연 설명이 표시됩니다.
+</div>
+
+<div class="result-box" id="resultBox">
+  💬 팀 이름을 입력하면 색이 표시됩니다. (A팀🔵 / B팀🔴 / C팀🟢)
+</div>
+
+<div class="controller">
+  <button class="reset" onclick="resetBoard()">초기화</button>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
