@@ -1,154 +1,355 @@
-  body {
-      font-family: "Pretendard", sans-serif;
-      background-color: #f6f7fb;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 10px 160px;
-  }
+/* ==============================
+ 🎨 기본 전역 스타일
+============================== */
+body {
+  font-family: "Pretendard", sans-serif;
+  background-color: #f6f7fb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 10px 160px;
+  transform: scale(0.7);              /* 🔹 전체 화면 비율 축소 */
+  transform-origin: top center;       /* 🔹 상단 기준 축소 */
+}
 
+/* ==============================
+ 🎴 빙고 카드 레이아웃
+============================== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 150px);
+  grid-gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  width: 150px;
+  height: 150px;
+  perspective: 1000px;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .inner {
+  transform: rotateY(180deg);
+}
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.front {
+  background-color: #cfd8dc;
+  color: #37474f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.back {
+  background-color: #ffffff;
+  color: #333;
+  transform: rotateY(180deg);
+  font-size: 0.9rem;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 3px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* ==============================
+ 🟦 팀 색상
+============================== */
+.team-A {
+  background-color: #bbdefb;
+  border-color: #2196f3;
+}
+.team-B {
+  background-color: #ffcdd2;
+  border-color: #e53935;
+}
+.team-C {
+  background-color: #c8e6c9;
+  border-color: #43a047;
+}
+.team-D {
+  background-color: #ffe0b2;
+  border-color: #fb8c00;
+}
+
+/* ==============================
+ 🧩 카드 내용
+============================== */
+.topic {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.4;
+}
+
+.name-field {
+  border-top: 1px solid #ddd;
+  padding-top: 4px;
+}
+
+.name-field input {
+  width: 100%;
+  padding: 3px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ==============================
+ 📦 설명 / 결과 박스
+============================== */
+.explain-box,
+.result-box {
+  margin-top: 30px;
+  width: calc(150px * 5 + 80px);
+  background: #fff;
+  border: 2px solid #90a4ae;
+  border-radius: 12px;
+  padding: 14px 16px 20px 16px;
+  line-height: 1.5;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.explain-box {
+  position: relative;
+  min-height: 70px;
+  overflow: hidden;
+}
+
+.result-box {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* ==============================
+ 🪄 설명 토글 버튼
+============================== */
+.toggle-explain {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background-color: #607d8b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.toggle-explain:hover {
+  background-color: #455a64;
+}
+
+/* 설명 내용 (기본 숨김) */
+#explainContent {
+  color: transparent;
+  transition: color 0.3s ease;
+}
+#explainContent.visible {
+  color: #333; /* 버튼 클릭 시 표시 */
+}
+
+/* ==============================
+ ⚙️ 하단 컨트롤러
+============================== */
+.controller {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  background: #f6f7fb;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+button {
+  margin: 0 6px;
+  padding: 6px 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #607d8b;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+button:hover {
+  background-color: #546e7a;
+}
+button.reset {
+  background-color: #b71c1c;
+}
+button.reset:hover {
+  background-color: #9a0007;
+}
+
+/* ==============================
+ 🎯 팀 선택 버튼
+============================== */
+.team-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+  flex-wrap: nowrap;
+}
+
+.team-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background-color 0.2s;
+  box-sizing: border-box;
+  margin: 2px;
+}
+.team-btn:hover {
+  transform: scale(1.15);
+}
+
+/* ==============================
+ 📱 반응형 조정
+============================== */
+@media (max-width: 700px) {
   .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 150px);
-      grid-gap: 20px;
-      justify-content: center;
+    grid-template-columns: repeat(5, 120px);
+    grid-gap: 14px;
   }
 
   .card {
-      width: 150px;
-      height: 150px;
-      perspective: 1000px;
-      cursor: pointer;
+    width: 120px;
+    height: 120px;
   }
 
-  .inner {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-  }
-
-  .card.flipped .inner {
-      transform: rotateY(180deg);
-  }
-
-  .front,
-  .back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 16px;
-      backface-visibility: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      font-weight: 600;
-      box-sizing: border-box;
-  }
-
-  .front {
-      background-color: #cfd8dc;
-      color: #37474f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-  }
-
-  .back {
-      background-color: #ffffff;
-      color: #333;
-      transform: rotateY(180deg);
-      font-size: 0.9rem;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border: 3px solid transparent;
-      transition: background-color 0.3s, border-color 0.3s;
-  }
-
-  /* 팀 색상 */
-  .team-A {
-      background-color: #bbdefb;
-      border-color: #2196f3;
-  }
-
-  .team-B {
-      background-color: #ffcdd2;
-      border-color: #e53935;
-  }
-
-  .team-C {
-      background-color: #c8e6c9;
-      border-color: #43a047;
-  }
-
-  .topic {
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.4;
-  }
-
-  .name-field {
-      border-top: 1px solid #ddd;
-      padding-top: 4px;
-  }
-
-  .name-field input {
-      width: 100%;
-      padding: 3px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 0.8rem;
-      text-align: center;
+  .team-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 0.7rem;
   }
 
   .explain-box,
   .result-box {
-      margin-top: 30px;
-      width: calc(150px * 5 + 80px);
-      background: #fff;
-      border: 2px solid #90a4ae;
-      border-radius: 12px;
-      padding: 14px;
-      line-height: 1.5;
-      color: #333;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: calc(120px * 5 + 60px);
   }
+}
 
-  .explain-box {
-      color: #fff;
-  }
+/* ==============================
+ 🚀 초기 선택 화면
+============================== */
+.setup-screen {
+  text-align: center;
+  margin-top: 120px;
+  animation: fadeIn 0.6s ease;
+}
 
-  .result-box {
-      text-align: center;
-      font-weight: 600;
-      margin-top: 10px;
-  }
+.topic-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 20px;
+}
 
-  .controller {
-      position: fixed;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
-      background: #f6f7fb;
-      padding: 10px 0;
-  }
+.topic-buttons button {
+  font-size: 1.2rem;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 12px;
+  background-color: #607d8b;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+.topic-buttons button:hover {
+  background-color: #455a64;
+  transform: scale(1.1);
+}
 
-  button {
-      margin: 0 6px;
-      padding: 6px 12px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #607d8b;
-      color: #fff;
-      cursor: pointer;
-  }
+/* 등장 애니메이션 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  button.reset {
-      background-color: #b71c1c;
-  }
+/* ==============================
+ 🎁 아이템 팝업
+============================== */
+
+.item-popup {
+  position: fixed;
+  top: 85%; /* 화면 중앙보다 약간 아래쪽 */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3rem;
+  z-index: 3000;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  animation: popIn 0.4s ease;
+}
+
+.item-popup.good {
+  border: 4px solid #4caf50;
+  color: #2e7d32;
+}
+.item-popup.bad {
+  border: 4px solid #f44336;
+  color: #b71c1c;
+}
+
+.item-popup .item-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+.item-popup .item-name {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+.item-popup .item-desc {
+  font-size: 1rem;
+  color: #555;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translate(-50%, -60%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
