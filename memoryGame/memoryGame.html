@@ -1,114 +1,222 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>기억력 게임</title>
     <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
         body {
-            font-family: 'Courier New', monospace;
+            font-family: 'Pretendard', sans-serif;
             text-align: center;
-            background-color: #f0f0f0;
+            background: #f5f5f5;
+            animation: bgPulse 10s infinite;
             padding: 20px;
+            margin: 0;
         }
+
+        @keyframes bgPulse {
+
+            0%,
+            100% {
+                background-color: #f5f5f5;
+            }
+
+            50% {
+                background-color: #eaeaea;
+            }
+        }
+
         h1 {
-            color: #333;
+            color: #111;
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
+
         #timer {
             font-size: 32px;
             font-weight: bold;
-            background-color: #000;
-            color: #00ff00;
+            background: #000;
             display: inline-block;
             padding: 10px 20px;
+            border-radius: 12px;
+            color: #00ff00;
             margin-top: 10px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         .game-board {
             display: grid;
             grid-template-columns: repeat(4, 100px);
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
             margin-top: 30px;
         }
-        /* 아래 스크립트 완료 후 여기부터 스타일 */
+
         .card {
             width: 100px;
             height: 100px;
             position: relative;
-            perspective: 1000px; /* 3D 회전을 위한 원근감 */
+            perspective: 1000px;
             cursor: pointer;
         }
-        /* 카드 앞뒤를 뒤집는 애니메이션 */
+
         .card-inner {
             width: 100%;
             height: 100%;
             position: absolute;
             transform-style: preserve-3d;
             transition: transform 0.6s;
-            transform: rotateY(0deg); /* 기본은 앞면 안 보이게 */
+            transform: rotateY(0deg);
         }
 
-        /* 카드가 뒤집히면 앞면이 보임 */
         .card.flipped .card-inner {
             transform: rotateY(180deg);
         }
 
-
-        .card-front, .card-back {
+        .card-front,
+        .card-back {
             width: 100%;
             height: 100%;
             position: absolute;
             backface-visibility: hidden;
-            border-radius: 10px;
+            border-radius: 14px;
             font-size: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
         }
 
         .card-front {
-            background: #fff;
-            border: 2px solid #ccc;
-            transform: rotateY(180deg); /* 앞면은 회전되어 있음 */
+            background: #ffffff;
+            border: 2px solid #444;
+            transform: rotateY(180deg);
+            color: #111;
         }
 
         .card-back {
-            background: #4caf50;
-            border: 2px solid #388e3c;
+            background: #444;
+            border: 2px solid #aaa;
             font-size: 24px;
-            color: white;
-            transform: rotateY(0deg); /* 뒷면은 기본 상태 */
+            color: #fff;
+            transform: rotateY(0deg);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
+
 <body>
-    <h1>🍉 기억력 게임 🍓</h1>
+    <h1>🍓 기억력 게임</h1>
     <div id="timer">00.00초</div>
     <div class="game-board" id="gameBoard"></div>
 
-    <audio src="sounds/pageturn-102978.mp3" id="flipSound" preload="auto"></audio>
-    <audio src="sounds/correct-356013.mp3" id="correctSound" preload="auto"></audio>
-    <audio src="sounds/error-03-125761.mp3" id="errorSound" preload="auto"></audio>
-    <audio src="sounds/you-win-sequence-3-183950.mp3" id="winSound" preload="auto"></audio>
+    <!-- 사운드 -->
+    <audio id="flipSound" src="sounds/pageturn-102978.mp3" preload="auto"></audio>
+    <audio id="correctSound" src="sounds/correct-356013.mp3" preload="auto"></audio>
+    <audio id="errorSound" src="sounds/error-03-125761.mp3" preload="auto"></audio>
+    <audio id="winSound" src="sounds/you-win-sequence-3-183950.mp3" preload="auto"></audio>
+
+    <div id="controlButtons" style="
+        position: fixed; bottom: 30px; left: 50%;
+        transform: translateX(-50%);
+        display: flex; gap: 10px;
+        z-index: 1000;
+        ">
+        <button onclick="location.href='https://cloud9june.github.io/sungil-edu/sungilKiosk.html'" style="font-size: 22px; padding: 14px 26px;
+           background: white; color: #111;
+           border: 2px solid #444; border-radius: 14px;
+           box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+           font-family: 'Pretendard', sans-serif;
+           transition: all 0.2s ease;" onmousedown="this.style.transform='scale(0.96)'"
+            onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.96)'"
+            ontouchend="this.style.transform='scale(1)'">
+            🏠 홈으로
+        </button>
+
+        <button id="startGameBtn" style="font-size: 22px; padding: 14px 26px;
+           background: white; color: #111;
+           border: 2px solid #444; border-radius: 14px;
+           box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+           font-family: 'Pretendard', sans-serif;
+           transition: all 0.2s ease;">
+            ▶️ 게임 시작
+        </button>
+
+        <button id="startGameBtn" onclick="location.href='https://cloud9june.github.io/sungil-edu/ranking.html'" style="font-size: 22px; padding: 14px 26px;
+           background: white; color: #111;
+           border: 2px solid #444; border-radius: 14px;
+           box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+           font-family: 'Pretendard', sans-serif;
+           transition: all 0.2s ease;">
+            👑 랭킹
+        </button>
+
+        <button id="restartGameBtn" style="display: none; font-size: 22px; padding: 14px 26px;
+           background: white; color: #111;
+           border: 2px solid #444; border-radius: 14px;
+           box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+           font-family: 'Pretendard', sans-serif;
+           transition: all 0.2s ease;" onclick="location.reload()">
+            🔁 다시하기
+        </button>
+    </div>
+    <div id="gameInfoBox" style="
+        margin-top: 100px;
+        margin-bottom: 120px;
+        padding: 20px;
+        background: #ffffff;
+        border: 2px solid #444;
+        border-radius: 16px;
+        font-family: 'Pretendard', sans-serif;
+        font-size: 18px;
+        color: #111;
+        width: calc(100% - 40px);
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out 1 forwards;
+        ">
+        소프트웨어개발과 2학년 11반<br>
+        수업 시간에 만든 웹게임입니다.<br>
+        어떻게 만들었는지 궁금하다면? 👉
+        <a href="code_memoryGame.html" style="color: #0066cc; text-decoration: none; font-weight: bold;">💻 코드 보러 가기</a>
+    </div>
+
 
     <script>
         const soundFlip = document.getElementById("flipSound");
         const soundCorrect = document.getElementById("correctSound");
         const soundError = document.getElementById("errorSound");
         const soundWin = document.getElementById("winSound");
-        // 상수로 처리하는 이유
-        // 1. 성능 -> DOM 탐색은 비용이 크기 때문에 반복 호출 줄이기
-        // 2. 가독성 -> 짧고 읽기 쉬운 코드로 작성 가능
-        // 3. 유지보수 -> 수정 시 한 곳만 고치면 됨
-        // 4. 오류방지 -> 오타나 null 접근 문제 줄임
-        // 5. 재사용성 -> 여러 곳에서 효율적으로 사용할 수 있음
 
         soundFlip.volume = 1.0;
-        soundCorrect.volume = 0.3;
-        soundError.volume = 0.3;
-        soundWin.volume = 1.0;
+        soundCorrect.volume = 0.1;
+        soundError.volume = 0.1;
+        soundWin.volume = 0.8;
 
         function playSound(audio) {
-            audio.currentTime = 0;  // 오디오를 맨 처음(0초 위치)부터 재생하도록 설정
+            audio.currentTime = 0;
             audio.play();
         }
 
@@ -116,131 +224,53 @@
             '🍎', '🍌', '🍇', '🍓', '🍊', '🥝',
             '🍍', '🥥', '🍒', '🍉', '🍐', '🍑'
         ];
-
-        // 과일 2개 생성하여 섞기
         const shuffled = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
-        // ...emojis
-        // ... 스프레드 문법 -> 스프레드 연산자
-        // 배열의 값을 나열해주는 것!
-        // ...emojis, ...emojis 는 결국 배열을 2번 복제해서 shuffled 배열에 담는 것
-        // array.sort(() => Math.random() - 0.5);
-        // Math.random()은 0 이상 1 미만의 실수 (예: 0.723, 0.102 등)를 반환
-        // 여기서 0.5를 빼면 -0.5 ~ +0.5 사이의 수가 랜덤으로 나옴
-        // 예: 0.2 - 0.5 = -0.3 (음수)
-        // 예: 0.8 - 0.5 = +0.3 (양수)
-        // 양수이면 그대로, 음수가 나오면 순서를 바꿔
-
         const gameBoard = document.getElementById('gameBoard');
         const timerDisplay = document.getElementById('timer');
-        
-        let firstCard = null;     // 첫 번째 선택 카드
-        let secondCard = null;    // 두 번째 선택 카드
-        let lockBoard = true;     // 클릭 잠금 상태
-        let matchedCount = 0;     // 맞춘 카드 수
-        let startTime = 0;        // 시작 시간
-        let timerInterval = null; // 타이머 반복
 
-        // 타이머 시작
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = true;
+        let matchedCount = 0;
+        let startTime = 0;
+        let timerInterval = null;
+
         function startTimer() {
             startTime = performance.now();
-            // performance.now()는 현재 시점을 "밀리초(ms)" 단위로 아주 정밀하게 측정해주는 고해상도 타이머 함수
             timerInterval = setInterval(() => {
                 const elapsed = (performance.now() - startTime) / 1000;
                 timerDisplay.textContent = `${elapsed.toFixed(2)}초`;
             }, 10);
         }
-        // 1. setInterval(() => { ... }, 10);
-        // - setInterval**은 일정 시간 간격으로 코드를 계속 반복해서 실행하는 함수
-        // - 10은 간격을 10밀리초(0.01초)로 설정
-        // 2. performance.now() - startTime
-        // - performance.now()는 현재 시간 (페이지 로드 후 기준, 밀리초)
-        // - startTime은 게임이 시작된 순간의 시간
-        // -> 게임이 시작된 후 지난 시간(밀리초)로 나타냄
-        // 3. / 1000
-        // - 밀리초(ms)를 초(s)로 바꿈 (예: 1250ms -> 1.25s)
-        // 4. elapsed(일랩스트).toFixed(2)
-        // - elapsed 는 실수, toFixed(2)는 소숫점 2자리
-        // 5. timerDisplay.textContent = ...
-        // - timerDisplay는 <div id="timer"> 요소
-        // - .textContent는 HTML 안의 글자를 바꾸는 기능
 
-        // 타이머 정지
         function stopTimer() {
             clearInterval(timerInterval);
         }
 
-        // 카드 HTML 요소 생성
-        function createCard(emoji, index) { // 카드 앞면의 과일 이모지, 카드 뒷면의 숫자
-            const card = document.createElement('div');  // 새로운 <div> 요소를 생성함. 단, 아직 화면에 보이지 않고 변수 card에 담김
-            card.classList.add('card');  // card 라는 요소에 "card"라는 클래스를 추가
-            card.dataset.emoji = emoji;  // HTML요소에 data-emoji="🍎" 속성을 추가하는 코드 -> 카드 짝 맞는지 비교할 때 사용
-            // dataset 은 HTML 의 data-* 속성을 자바스크립트에서 다루기 위한 방법
+        function createCard(emoji, index) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.emoji = emoji;
             card.innerHTML = `
-                <div class="card-inner">
-                    <div class="card-front">${emoji}</div>
-                    <div class="card-back">${index + 1}</div>
-                </div>
-            `;
-            // card 안에 들어갈 내부 HTML을 문자열로 한 번에 만들어서 추가
+        <div class="card-inner">
+          <div class="card-front">${emoji}</div>
+          <div class="card-back">${index + 1}</div>
+        </div>
+      `;
             return card;
-            // 완성된 card DOM요소를 결과로 반환
-            // 추후 gameBoard.appendChild(card) 로 게임판에 붙여줘야 실제로 보이게 됨
         }
 
-        // 카드 생성 및 게임판에 추가
         shuffled.forEach((emoji, idx) => {
             const card = createCard(emoji, idx);
             gameBoard.appendChild(card);
         });
-        // 1. shuffled.forEach((emoji, idx) => { ... });
-        // - forEach()는 배열의 모든 요소를 하나씩 꺼내서 반복하는 함수
-        // - emoji는 현재 요소 (이모지 하나)
-        // - idx는 현재 인덱스 (0부터 시작하는 번호)
-        // 2. const card = createCard(emoji, idx);
-        // - 앞서 만든 createCard() 함수 호출
-        // - emoji를 카드 앞면 그림으로 사용
-        // - idx는 뒷면 숫자 표시용 (index + 1)
-        // -> 하나의 카드 DOM 요소를 생성하는 것!!
-        //3. gameBoard.appendChild(card);
-        // - card를 실제 게임판에 추가
-        // - gameBoard는 HTML의 이 부분:
-        // - <div class="game-board" id="gameBoard"></div>
-        // -> gameBoard 안에 카드들이 하나씩 붙어서 전체 카드판이 완성되는 구조야.
 
         const allCards = document.querySelectorAll('.card');
-        // querySelectorAll(...) -> 특정 조건에 맞는 모든 요소를 선택하는 함수
-        // 즉, HTML 문서에서 클래스 이름 "card"인 모든 요소를 찾아서
-        // 배열처럼 생긴 NodeList로 가져옴
-        // NodeList(24) [div.card, div.card, div.card, ..., div.card]
-        // 이를 통해 allCards를 이용하여 모든 카드를 대상으로 공통의 작업을 쉽게 할 수 있음.
 
-        // 지연 함수 (비동기 처리를 위한)
         async function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-        // 1. async function delay(ms)
-        // - async 는 비동기 함수라는 표시
-        // - 이 함수는 항상 Promise 객체를 반환함
-        // - ms는 기달릴 시간(밀리초 단위)을 매개변수로 받는 것!
-        // 2. return new Promise(resolve => setTimeout(resolve, ms))
-        // 2-1. setTimeout(resolve, ms)
-        //      - setTimeout은 ms초 후에 resolve() 라는 함수를 실행하라는 뜻임.
-        //      - 즉, 일정 시간이 지난 후 약속(Promise)를 "해결(resolve)" 하겠다는 의미.
-        // 2-2. new Promise(...)
-        //      - promise는 "나중에 어떤 작업이 끝날 것을 약속하는 객체"
-        //      - 우리가 직접 resolve()를 호출해야 "끝났다"고 알려주는 구조!!
-        // 자연어로 풀어보면!
-        // 나는 ms 밀리초가 지나면 끝나는 약속(Promise)를 만들거야.
-        // 그 약속은 시간이 다 지나면 resolve()를 호출해서 '끝났어!'라고 말할거야!
 
-        // 나의 최종 정리
-        // delay(ms) 함수는
-        // 1. 비동기 방식으로 작동하여,
-        // 2. 기다리는 동안에도 웹 페이지는 다른 작업(화면 그리기, 클릭 이벤트 등)을 계속 진행할 수 있고,
-        // 3. 지정된 시간이 지나면 resolve()가 호출되어 Promise가 완료되었다는 신호를 주며,
-        // 4. await delay(ms)를 사용하면 그 시점까지 기다렸다가 다음 코드로 넘어가게 된다.
-
-        // 게임 시작 시 모든 카드를 순서대로 보여주고 감추는 애니메이션
         async function sequentialRevealAndHide() {
             for (let i = 0; i < allCards.length; i++) {
                 allCards[i].classList.add('flipped');
@@ -256,14 +286,12 @@
                 await delay(80);
             }
 
-            lockBoard = false;  // 클릭 잠금 해제
+            lockBoard = false;
             startTimer();
         }
 
-        // 게임 시작 시 자동 실행
-        sequentialRevealAndHide();
-        
-        // 카드 클릭 이벤트 처리
+        // sequentialRevealAndHide();
+
         allCards.forEach(card => {
             card.addEventListener('click', () => {
                 if (lockBoard || card.classList.contains('flipped')) return;
@@ -272,40 +300,70 @@
                 playSound(soundFlip);
 
                 if (!firstCard) {
-                firstCard = card;
+                    firstCard = card;
                 } else {
-                secondCard = card;
-                lockBoard = true;
+                    secondCard = card;
+                    lockBoard = true;
 
-                if (firstCard.dataset.emoji === secondCard.dataset.emoji) {
-                    // 정답
-                    playSound(soundCorrect);
-                    matchedCount++;
-                    firstCard = null;
-                    secondCard = null;
-                    lockBoard = false;
+                    if (firstCard.dataset.emoji === secondCard.dataset.emoji) {
+                        playSound(soundCorrect);
+                        matchedCount++;
+                        firstCard = null;
+                        secondCard = null;
+                        lockBoard = false;
 
-                    // 모든 카드 맞춘 경우
-                    if (matchedCount === emojis.length) {
-                    stopTimer();
-                    playSound(soundWin);
-                    setTimeout(() => alert(`🎉 모두 맞췄습니다! ⏱️ ${timerDisplay.textContent} 소요`), 300);
+                        if (matchedCount === emojis.length) {
+                            stopTimer();
+                            playSound(soundWin);
+                            const time = parseFloat(timerDisplay.textContent.replace("초", ""));
+
+                            setTimeout(() => {
+                                const playerName = prompt(
+                                    `🎉 모두 맞췄습니다!\n기록: ${time.toFixed(2)}초\n이름을 입력해주세요 (10자 이내):`,
+                                    "홍길동");
+                                if (playerName) {
+                                    const newRecord = {
+                                        name: playerName.slice(0, 10),
+                                        time: time
+                                    };
+                                    const records = JSON.parse(localStorage.getItem(
+                                        "memoryGameRecords") || "[]");
+                                    records.push(newRecord);
+                                    localStorage.setItem("memoryGameRecords", JSON.stringify(
+                                        records));
+                                    location.href = "ranking.html";
+                                }
+                            }, 300);
+                        }
+                    } else {
+                        playSound(soundError);
+                        setTimeout(() => {
+                            firstCard.classList.remove('flipped');
+                            secondCard.classList.remove('flipped');
+                            playSound(soundFlip);
+                            firstCard = null;
+                            secondCard = null;
+                            lockBoard = false;
+                        }, 1000);
                     }
-                } else {
-                    // 오답
-                    playSound(soundError);
-                    setTimeout(() => {
-                    firstCard.classList.remove('flipped');
-                    secondCard.classList.remove('flipped');
-                    playSound(soundFlip);
-                    firstCard = null;
-                    secondCard = null;
-                    lockBoard = false;
-                    }, 1000);
                 }
-                }
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // 초기 상태: 카드 클릭 비활성화
+            allCards.forEach(card => card.style.pointerEvents = "none");
+
+            // 시작 버튼 이벤트 연결
+            document.getElementById("startGameBtn").addEventListener("click", () => {
+                document.getElementById("startGameBtn").style.display = "none";
+                document.getElementById("restartGameBtn").style.display = "inline-block";
+                document.getElementById("gameInfoBox").classList.add("hidden");
+                allCards.forEach(card => card.style.pointerEvents = "auto");
+                sequentialRevealAndHide();
             });
         });
     </script>
 </body>
+
 </html>
