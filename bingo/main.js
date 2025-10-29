@@ -1,3 +1,6 @@
+// ============================
+// 기존 변수들 그대로 유지
+// ============================
 const grid = document.getElementById("cardGrid");
 const explainBox = document.getElementById("explainBox");
 const resultBox = document.getElementById("resultBox");
@@ -5,82 +8,172 @@ const toggleBtn = document.getElementById("toggleExplainBtn");
 const explainContent = document.getElementById("explainContent");
 
 if (typeof itemList === "undefined") {
-    console.warn("⚠️ itemList가 없습니다. item.js를 먼저 불러오세요.");
+  console.warn("⚠️ itemList가 없습니다. item.js를 먼저 불러오세요.");
 }
 
 let teamCount = 3;
-let gameMode = "normal"; // "item" or "normal"
+let gameMode = "normal";
 let topicsLoaded = false;
+let teamData = []; // 🔹 새로 추가
 
-const teamColors = [{
-        name: "A",
-        bg: "#bbdefb",
-        border: "#2196f3"
-    },
-    {
-        name: "B",
-        bg: "#ffcdd2",
-        border: "#e53935"
-    },
-    {
-        name: "C",
-        bg: "#c8e6c9",
-        border: "#43a047"
-    },
-    {
-        name: "D",
-        bg: "#ffe0b2",
-        border: "#fb8c00"
-    },
+const teamColors = [
+  { name: "A", bg: "#bbdefb", border: "#2196f3" },
+  { name: "B", bg: "#ffcdd2", border: "#e53935" },
+  { name: "C", bg: "#c8e6c9", border: "#43a047" },
+  { name: "D", bg: "#ffe0b2", border: "#fb8c00" },
 ];
 
-// ✅ 주제 선택 후 모드 화면으로 이동
+// ============================
+// ✅ 주제 선택/모드 선택 기존 로직 그대로
+// ============================
 function selectDataset(file, title) {
-    document.getElementById("setupScreen").style.display = "none";
-
-    // 🔹 모드 선택 화면 표시
-    const modeScreen = document.getElementById("modeScreen");
-    if (modeScreen) {
-        modeScreen.style.display = "block";
-        modeScreen.dataset.datasetFile = file;
-        modeScreen.dataset.datasetTitle = title;
-    }
+  document.getElementById("setupScreen").style.display = "none";
+  const modeScreen = document.getElementById("modeScreen");
+  modeScreen.style.display = "block";
+  modeScreen.dataset.datasetFile = file;
+  modeScreen.dataset.datasetTitle = title;
 }
 
-// ✅ 모드 선택 후 본 게임 시작
 function setGameMode(mode) {
-    gameMode = mode;
+  gameMode = mode;
+  const modeScreen = document.getElementById("modeScreen");
+  const file = modeScreen.dataset.datasetFile;
+  const title = modeScreen.dataset.datasetTitle;
+  modeScreen.style.display = "none";
 
-    const modeScreen = document.getElementById("modeScreen");
-    const file = modeScreen.dataset.datasetFile;
-    const title = modeScreen.dataset.datasetTitle;
-    modeScreen.style.display = "none";
+  const titleEl = document.getElementById("gameTitle");
+  titleEl.textContent = `🃏 ${title} 빙고 게임 (${mode === "item" ? "아이템전 🎁" : "노아이템전 🚫"})`;
+  titleEl.style.display = "block";
 
-    const titleEl = document.getElementById("gameTitle");
-    titleEl.textContent = `🃏 ${title} 빙고 게임 (${mode === "item" ? "아이템전 🎁" : "노아이템전 🚫"})`;
-    titleEl.style.display = "block";
-
-    document.getElementById("cardGrid").style.display = "grid";
-    document.getElementById("explainBox").style.display = "block";
-    document.getElementById("resultBox").style.display = "block";
-    document.querySelector(".controller").style.display = "block";
-
-    const script = document.createElement("script");
-    script.src = file;
-    script.onload = () => {
-        topicsLoaded = true;
-        setTimeout(() => initGame(), 300);
-    };
-    document.body.appendChild(script);
+  const script = document.createElement("script");
+  script.src = file;
+  script.onload = () => {
+    topicsLoaded = true;
+    setTimeout(() => initGame(), 300);
+  };
+  document.body.appendChild(script);
 }
 
-// ✅ 팀 수 설정 후 카드 생성
+// ============================
+// ✅ 팀 분배 기능 추가
+// ============================
 function initGame() {
-    const input = prompt("팀 수를 입력하세요 (2~4)", "3");
-    const n = parseInt(input);
-    if (n >= 2 && n <= 4) teamCount = n;
-    else alert("잘못된 입력입니다. 기본 3팀으로 설정됩니다.");
-    createCards();
+  const input = prompt("팀 수를 입력하세요 (2~4)", "3");
+  const n = parseInt(input);
+  if (n >= 2 && n <= 4) teamCount = n;
+  else alert("잘못된 입력입니다. 기본 3팀으로 설정됩니다.");
+
+  showTeamSetupPanel(); // 🔹 기존 빙고 이전 단계로 팀 배정 화면 추가
+}
+
+function showTeamSetupPanel() {
+  const total = parseInt(prompt("총 인원을 입력하세요", "10"));
+  if (!total || total < 1) return alert("올바른 인원을 입력하세요.");
+
+  const distribution = calcTeamDistribution(total, teamCount);
+
+  // 기존 패널 제거
+  const old = document.getElementById("teamPanel");
+  if (old) old.remove();
+
+  const panel = document.createElement("div");
+  panel.id = "teamPanel";
+  panel.classList.add("team-panel");
+
+  // ✅ 빙고판 옆의 right-wrapper 안에 추가
+  const rightWrapper = document.querySelector(".right-wrapper");
+  if (!rightWrapper) {
+    alert("오른쪽 영역(.right-wrapper)을 찾을 수 없습니다. HTML 구조를 확인하세요.");
+    return;
+  }
+
+  // 🔹 빙고판/팀패널 화면 보이게 하기
+  const gameContainer = document.querySelector(".game-container");
+  gameContainer.style.display = "flex";
+
+  rightWrapper.prepend(panel);
+
+  // ✅ 설명/결과 박스도 함께 표시
+  const explainBox = document.getElementById("explainBox");
+  const resultBox = document.getElementById("resultBox");
+  explainBox.style.display = "block";
+  resultBox.style.display = "block";
+
+  panel.innerHTML = `
+    <h3>👥 팀 구성</h3>
+    <div class="team-list"></div>
+    <div class="input-area">
+      <input id="studentName" type="text" placeholder="이름 입력">
+      <button id="addStudent">추가</button>
+    </div>
+    <div class="action-buttons">
+      <button id="resetGameBtn" class="reset-btn">초기화 🔄</button>
+      <button id="startGameBtn" class="start-btn">빙고 시작 ▶</button>
+    </div>
+  `;
+
+  const list = panel.querySelector(".team-list");
+  list.style.gridTemplateColumns = `repeat(${teamCount}, 1fr)`;
+
+  teamData = teamColors.slice(0, teamCount).map((t, i) => ({
+    ...t, limit: distribution[i], members: []
+  }));
+
+  teamData.forEach((t) => {
+    const div = document.createElement("div");
+    div.className = "team-col";
+    div.innerHTML = `
+      <div class="team-header" style="background:${t.bg}; border-color:${t.border}">
+        ${t.name}팀 (${t.limit}명)
+      </div>
+      <ul id="team-${t.name}"></ul>
+    `;
+    list.appendChild(div);
+  });
+
+  document.getElementById("addStudent").addEventListener("click", () => {
+    const name = document.getElementById("studentName").value.trim();
+    if (!name) return alert("이름을 입력하세요.");
+    assignRandomTeam(name);
+    document.getElementById("studentName").value = "";
+  });
+
+  document.getElementById("startGameBtn").addEventListener("click", () => {
+    startBingoGame();
+  });
+
+  document.getElementById("resetGameBtn").addEventListener("click", () => {
+    location.reload(); // 완전 초기화 (주제 선택 화면으로 복귀)
+  });
+}
+
+
+
+function calcTeamDistribution(total, teamCount) {
+  const base = Math.floor(total / teamCount);
+  const remainder = total % teamCount;
+  const arr = Array(teamCount).fill(base);
+  for (let i = 0; i < remainder; i++) arr[i]++;
+  return arr;
+}
+
+function assignRandomTeam(name) {
+  const available = teamData.filter(t => t.members.length < t.limit);
+  if (!available.length) return alert("모든 팀이 가득 찼습니다!");
+  const team = available[Math.floor(Math.random() * available.length)];
+  team.members.push(name);
+
+  const ul = document.getElementById(`team-${team.name}`);
+  const li = document.createElement("li");
+  li.textContent = name;
+  ul.appendChild(li);
+}
+
+function startBingoGame() {
+  document.getElementById("cardGrid").style.display = "grid";
+  explainBox.style.display = "block";
+  resultBox.style.display = "block";
+  createCards();
 }
 
 // ✅ 카드 생성
@@ -286,16 +379,14 @@ function showItemPopup(itemName) {
     <div class="item-icon">${item.type === "good" ? "🎁" : "💀"}</div>
     <div class="item-name">${item.name}</div>
     <div class="item-desc">${item.desc}</div>
+    <button class="item-close">닫기 ✖</button>
   `;
     document.body.appendChild(popup);
     currentPopup = popup;
-}
 
-// ✅ 초기화
-function resetBoard() {
-    createCards();
-    explainContent.innerHTML =
-        "💬 카드가 뒤집히면 이곳에 교사용 부연 설명이 표시됩니다.";
-    resultBox.innerHTML =
-        "💬 팀을 선택하면 색이 표시됩니다. (최대 4팀까지)";
+    // 닫기 버튼 동작
+    popup.querySelector(".item-close").addEventListener("click", () => {
+    popup.remove();
+    currentPopup = null;
+  });
 }
