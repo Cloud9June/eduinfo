@@ -5,9 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>빙고 게임</title>
 
-<!-- 🔽 기본 CSS -->
+<!-- 🎨 기본 스타일 -->
 <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
@@ -18,10 +17,13 @@
     <button onclick="selectDataset('data1.js', '논술')">🗣️ 논술</button>
     <button onclick="selectDataset('data2.js', '넌센스')">😂 넌센스</button>
     <button onclick="selectDataset('data3.js', '상식')">💡 상식</button>
+    <button onclick="selectDataset('data4.js', '국기 퀴즈')">🌍 국기 퀴즈</button>
+    <button onclick="selectDataset('data5.js', '속담 퀴즈')">📜 속담 퀴즈</button>
+    <button onclick="selectDataset('data6.js', '사자성어 퀴즈')">🐉 사자성어 퀴즈</button>
   </div>
 </div>
 
-<!-- ✅ ② 게임 모드 선택 화면 (아이템전 / 노아이템전) -->
+<!-- ✅ ② 게임 모드 선택 -->
 <div id="modeScreen" class="setup-screen" style="display:none;">
   <h2>🎮 게임 모드 선택</h2>
   <div class="mode-buttons">
@@ -30,30 +32,35 @@
   </div>
 </div>
 
-<!-- ✅ ③ 본 게임 화면 (초기엔 숨김 상태) -->
-<h2 id="gameTitle" style="display:none">🃏 빙고 게임</h2>
+<!-- ✅ ③ 본 게임 화면 -->
+<h2 id="gameTitle" style="display:none;">🃏 빙고 게임</h2>
 
-<div class="grid" id="cardGrid" style="display:none"></div>
+<!-- 🔹 빙고판 + 오른쪽 영역 묶는 부모 -->
+<div class="game-container" style="display:none;">
+  
+  <!-- 🎴 빙고판 -->
+  <div id="cardGrid" class="grid"></div>
 
-<!-- ✅ 설명 박스 -->
-<div class="explain-box" id="explainBox" style="display:none;">
-  <button id="toggleExplainBtn" class="toggle-explain">📘 설명 보기</button>
-  <div id="explainContent" class="hidden">
-    💬 카드가 뒤집히면 이곳에 교사용 부연 설명이 표시됩니다.
+  <!-- 📦 오른쪽 전체 래퍼: 팀패널 + 설명 + 결과 -->
+  <div class="right-wrapper">
+    <!-- ✅ teamPanel은 JS로 여기 안에 생성됩니다 -->
+    
+    <!-- 📘 설명 박스 -->
+    <div id="explainBox" class="explain-box" style="display:none;">
+      <button id="toggleExplainBtn" class="toggle-explain">📘 설명 보기</button>
+      <div id="explainContent" class="hidden">
+        💬 카드가 뒤집히면 이곳에 교사용 부연 설명이 표시됩니다.
+      </div>
+    </div>
+
+    <!-- 💬 결과 박스 -->
+    <div id="resultBox" class="result-box" style="display:none;">
+      💬 팀 이름을 입력하면 색이 표시됩니다. <br/> (A팀🔵 / B팀🔴 / C팀🟢 / D팀🟠)
+    </div>
   </div>
 </div>
 
-<!-- ✅ 결과 박스 -->
-<div class="result-box" id="resultBox" style="display:none;">
-  💬 팀 이름을 입력하면 색이 표시됩니다. (A팀🔵 / B팀🔴 / C팀🟢 / D팀🟠)
-</div>
-
-<!-- ✅ 하단 컨트롤러 -->
-<div class="controller" style="display:none;">
-  <button class="reset" onclick="resetBoard()">초기화</button>
-</div>
-
-<!-- ✅ 메인 스크립트 -->
+<!-- ✅ 스크립트 로딩 순서 중요 -->
 <script src="item.js"></script>
 <script src="main.js"></script>
 </body>
