@@ -72,6 +72,7 @@
     flex-shrink:0;
   }
   .brand{
+    grid-column:1;
     display:flex;
     flex-direction:column;
     gap:0.3rem;
@@ -100,12 +101,14 @@
   @keyframes blip{0%,100%{opacity:1;}50%{opacity:0.25;}}
 
   .clockbox{
+    grid-column:3;
     text-align:right;
     justify-self:end;
   }
 
   /* ---------- 상단 중앙: 금요일 시정표 스트립 ---------- */
   .today-schedule{
+    grid-column:2;
     justify-self:center;
     display:flex;
     flex-direction:column;
@@ -346,7 +349,7 @@
       <div class="name">SUNGIL INFORMATION HIGH SCHOOL · 성일정보고등학교</div>
       <div class="type"><span class="blip"></span>ARRIVALS / 도착 안내</div>
     </div>
-    <!-- <div class="today-schedule">
+    <div class="today-schedule">
       <div class="ts-label">FRI SCHEDULE · 금요일 시정표</div>
       <div class="ts-row">
         <span class="ts-item"><i class="dot mint"></i>1교시 · 봉사</span>
@@ -357,7 +360,7 @@
         <span class="ts-sep">/</span>
         <span class="ts-item"><i class="dot coral"></i>4교시 · 창체활동</span>
       </div>
-    </div> -->
+    </div>
 
     <div class="clockbox">
       <div class="date" id="dateStr">2026.08.14 (금)</div>
