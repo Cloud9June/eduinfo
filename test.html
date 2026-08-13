@@ -58,9 +58,55 @@
     position:relative;
     z-index:2;
     width:100vw;height:100vh;
-    padding:1.5rem 3.4rem 0;
+    padding:1.5rem 3.4rem 0 17rem;
     display:flex;
     flex-direction:column;
+  }
+
+  /* ---------- 왼쪽 광고 패널 (티켓 절취선 컨셉) ---------- */
+  .ad-panel{
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:13.4rem;
+    z-index:3;
+    overflow:hidden;
+    border-right:0.14rem dashed rgba(255,248,236,0.28);
+  }
+  .ad-panel img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .ad-panel::before, .ad-panel::after{
+    content:"";
+    position:absolute;
+    right:-0.6rem;
+    width:1.2rem;height:1.2rem;
+    border-radius:50%;
+    background:var(--bg-deep);
+    z-index:4;
+  }
+  .ad-panel::before{top:-0.6rem;}
+  .ad-panel::after{bottom:-0.6rem;}
+  .ad-tag{
+    position:absolute;
+    left:0.7rem;top:0.7rem;
+    z-index:5;
+    background:rgba(10,13,19,0.72);
+    color:var(--dim);
+    font-size:0.6rem;
+    letter-spacing:0.16em;
+    padding:0.25rem 0.55rem;
+    border-radius:0.2rem;
+    border:1px solid var(--line);
+  }
+  .ad-fade{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:35%;
+    background:linear-gradient(180deg, transparent, rgba(5,7,11,0.85));
+    z-index:4;
+    pointer-events:none;
   }
 
   /* ---------- 상단 바 ---------- */
@@ -239,7 +285,7 @@
 
   /* ---------- 도착 안내 테이블 ---------- */
   .schedule{
-    width:min(54vw, 130rem);
+    width:min(84vw, 150rem);
     margin:0 auto 0.9rem;
     border-radius:0.6rem;
     background:rgba(255,255,255,0.02);
@@ -341,6 +387,12 @@
 <body>
 
 <div class="sweep"></div>
+
+<div class="ad-panel">
+  <span class="ad-tag">AD</span>
+  <img id="adImg" alt="추천 콘텐츠" src="1.png">
+  <div class="ad-fade"></div>
+</div>
 
 <div class="board">
 
