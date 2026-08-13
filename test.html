@@ -293,25 +293,29 @@
   .ticker-track{
     flex:1;
     overflow:hidden;
-    white-space:nowrap;
     position:relative;
     height:100%;
+    display:flex;
+    align-items:center;
   }
-  .ticker-track span{
-    position:absolute;
+  .ticker-inner{
+    display:flex;
+    align-items:center;
     white-space:nowrap;
-    left:100%;
-    top:50%;
-    transform:translateY(-50%);
-    animation:tickerMove 26s linear infinite;
+    animation:tickerMove 24s linear infinite;
+    will-change:transform;
+  }
+  .ticker-inner span{
+    display:inline-block;
+    padding-right:5rem;
     font-size:0.88rem;
     letter-spacing:0.04em;
     color:var(--mint);
     text-shadow:0 0 0.6rem rgba(62,226,138,0.35);
   }
   @keyframes tickerMove{
-    from{left:100%;}
-    to{left:-220%;}
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -385,7 +389,10 @@
   <div class="ticker-wrap">
     <div class="ticker-tag">WELCOME</div>
     <div class="ticker-track">
-      <span id="tickerText">방학 동안 안전하고 즐거운 시간 보낸 우리 학생들, 다시 만나서 반갑습니다 · 2학기도 성일정보고와 함께 힘차게 시작해요 · WELCOME BACK, SUNGIL !</span>
+      <div class="ticker-inner" id="tickerInner">
+        <span>방학 동안 안전하고 즐거운 시간 보낸 우리 학생들, 다시 만나서 반갑습니다 · 2학기도 성일정보고와 함께 힘차게 시작해요 · WELCOME BACK, SUNGIL !</span>
+        <span aria-hidden="true">방학 동안 안전하고 즐거운 시간 보낸 우리 학생들, 다시 만나서 반갑습니다 · 2학기도 성일정보고와 함께 힘차게 시작해요 · WELCOME BACK, SUNGIL !</span>
+      </div>
     </div>
   </div>
 
